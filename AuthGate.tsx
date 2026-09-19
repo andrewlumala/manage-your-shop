@@ -34,7 +34,12 @@ export function AuthGate({ children }: { children: (props: AppAuthProps) => Reac
       setLoading(false);
       return;
     }
-    getSession().then((s) => setSession(s));
+    getSession().then((s) => {
+      setSession(s);
+      // No session at all — nothing left to resolve, show the login screen
+      // now rather than waiting on a team lookup that will never run.
+      if (!s) setLoading(false);
+    });
     return onAuthStateChange((s, event) => {
       if (event === 'PASSWORD_RECOVERY') setRecovering(true);
       setSession(s);
@@ -45,10 +50,7 @@ export function AuthGate({ children }: { children: (props: AppAuthProps) => Reac
   // create them (owner if they're the very first ever, otherwise pending
   // staff) if they're new, or just look up their existing membership.
   useEffect(() => {
-    if (!session) {
-      setLoading(isSupabaseConfigured);
-      return;
-    }
+    if (!session) return;
     let cancelled = false;
     (async () => {
       const currentTeam = await loadTeam();
