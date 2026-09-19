@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .receipt-print,
+  .receipt-print *,
+  .report-print,
+  .report-print * {
+    visibility: visible;
+  }
+  .receipt-print {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: #000;
+    background: #fff;
+  }
+  .report-print {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: #000 !important;
+    background: #fff !important;
+  }
+  .report-print * {
+    color: #000 !important;
+    background: transparent !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+}

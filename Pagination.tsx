@@ -1,0 +1,45 @@
+export function Pagination({
+  page,
+  pageCount,
+  total,
+  pageSize,
+  onPageChange,
+}: {
+  page: number;
+  pageCount: number;
+  total: number;
+  pageSize: number;
+  onPageChange: (page: number) => void;
+}) {
+  if (total === 0) return null;
+
+  const start = (page - 1) * pageSize + 1;
+  const end = Math.min(page * pageSize, total);
+
+  return (
+    <div className="flex items-center justify-between px-6 py-3 border-t border-violet-100 dark:border-neutral-800">
+      <p className="text-xs text-neutral-500 dark:text-neutral-500">
+        Showing {start}–{end} of {total}
+      </p>
+      <div className="flex items-center gap-1">
+        <button
+          onClick={() => onPageChange(Math.max(1, page - 1))}
+          disabled={page <= 1}
+          className="px-3 py-1.5 text-sm rounded-lg text-neutral-600 hover:bg-violet-50 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white disabled:opacity-30 disabled:hover:bg-transparent transition-all"
+        >
+          Prev
+        </button>
+        <span className="px-2 text-sm text-neutral-500 dark:text-neutral-500">
+          {page} / {pageCount}
+        </span>
+        <button
+          onClick={() => onPageChange(Math.min(pageCount, page + 1))}
+          disabled={page >= pageCount}
+          className="px-3 py-1.5 text-sm rounded-lg text-neutral-600 hover:bg-violet-50 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white disabled:opacity-30 disabled:hover:bg-transparent transition-all"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  );
+}
